@@ -1,0 +1,599 @@
+/* =========================================
+   0. VARIABEL WARNA (light & dark mode)
+   ========================================= */
+:root {
+  --bg-app: #ffffff;
+  --bg-panel: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-input: #ffffff;
+  --bg-input-disabled: #f1f5f9;
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --border-color: #e2e8f0;
+  --border-dashed: #cbd5e1;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --track-bg: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+html.dark {
+  --bg-app: #0f172a;
+  --bg-panel: #0f172a;
+  --bg-card: #1e293b;
+  --bg-input: #1e293b;
+  --bg-input-disabled: #0f172a;
+  --bg-hover: rgba(255, 255, 255, 0.05);
+  --border-color: #334155;
+  --border-dashed: #475569;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --track-bg: #334155;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg-app);
+  color: var(--text-main);
+}
+
+h1, h2, h3 { margin: 0; }
+
+/* =========================================
+   1. LAYOUT UTAMA
+   ========================================= */
+.app-shell {
+  display: flex;
+  height: 100vh;
+}
+
+.map-el {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+/* =========================================
+   2. SIDEBAR / PANEL
+   ========================================= */
+.panel {
+  width: 340px;
+  max-width: 85%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border-color);
+  padding: 20px;
+  padding-bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-main);
+}
+
+.app-title .ph-fill {
+  color: #2563eb;
+}
+
+.app-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: background 0.15s ease;
+}
+.icon-btn:hover {
+  background: var(--bg-hover);
+}
+.icon-btn.icon-dashboard { color: #a855f7; }
+.icon-btn.icon-admin { color: #f97316; }
+
+/* =========================================
+   3. MODE SWITCH (Segmented control)
+   ========================================= */
+.mode-switch {
+  display: flex;
+  background: var(--track-bg);
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  gap: 2px;
+}
+
+.mode-switch-btn {
+  flex: 1;
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mode-active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+html.dark .mode-active {
+  background: #334155;
+  color: #ffffff;
+}
+
+/* =========================================
+   4. ACCORDION
+   ========================================= */
+.accordion {
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.accordion > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  border-radius: 12px;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+.accordion > summary::-webkit-details-marker,
+.accordion > summary::marker {
+  display: none;
+}
+.accordion > summary:hover {
+  background: var(--bg-hover);
+}
+
+.accordion-summary-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.accordion-icon {
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+.accordion[open] > summary .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  padding: 8px 16px 16px;
+}
+
+/* =========================================
+   5. FORM ELEMENTS
+   ========================================= */
+.hint-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.field {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 14px;
+}
+
+.field input[type="text"],
+.field input[type="password"],
+.field input[type="number"],
+.field select,
+.field textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 6px;
+  padding: 9px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-input);
+  color: var(--text-main);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.field input[readonly] {
+  background: var(--bg-input-disabled);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.field input[type="file"] {
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.field-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+.field-inline input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.coords-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-divider {
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 1px solid var(--border-color);
+}
+
+.form-divider-dashed {
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1px dashed var(--border-dashed);
+}
+
+.geocode-hint {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted);
+  min-height: 16px;
+  margin: 0 0 14px;
+}
+
+/* =========================================
+   6. BUTTONS
+   ========================================= */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+}
+.btn-row .btn {
+  flex: 1;
+}
+
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-secondary { background: var(--track-bg); color: var(--text-main); }
+.btn-secondary:hover { background: var(--border-color); }
+
+.btn-success { background: rgba(16, 185, 129, 0.1); color: #059669; }
+.btn-success:hover { background: rgba(16, 185, 129, 0.2); }
+html.dark .btn-success { color: #34d399; }
+
+.btn-outline { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+.btn-outline:hover { background: rgba(37, 99, 235, 0.15); }
+html.dark .btn-outline { color: #60a5fa; }
+
+.btn-danger { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+.btn-danger:hover { background: rgba(239, 68, 68, 0.2); }
+html.dark .btn-danger { color: #f87171; }
+
+.btn-warning { background: rgba(249, 115, 22, 0.12); color: #ea580c; }
+.btn-warning:hover { background: rgba(249, 115, 22, 0.2); }
+html.dark .btn-warning { color: #fb923c; }
+
+.admin-info-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 4px 0 0;
+}
+
+.list-plain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
+.list-plain li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* =========================================
+   7. MOBILE PANEL TOGGLE
+   ========================================= */
+.panel-toggle-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1100;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-size: 18px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+.panel-overlay.show { display: block; }
+
+@media (max-width: 768px) {
+  .panel-toggle-btn { display: flex; }
+
+  .panel {
+    position: fixed;
+    inset-block: 0;
+    left: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    padding-top: 64px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  .panel.panel-open {
+    transform: translateX(0);
+  }
+}
+
+/* =========================================
+   8. MODAL
+   ========================================= */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.show { display: flex; }
+.modal-overlay.open { opacity: 1; }
+
+.modal-box {
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.open .modal-box {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-main);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.modal-close:hover { color: var(--text-main); }
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin: 16px 0 8px;
+}
+.modal-section-title:first-child { margin-top: 0; }
+
+/* =========================================
+   9. LEAFLET: foto popup, legenda, tooltip zona
+   ========================================= */
+.popup-photo {
+  display: block;
+  width: 200px;
+  height: 130px;
+  object-fit: cover;
+  margin: 6px 0;
+  border-radius: 8px;
+}
+
+.legend {
+  background: white;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+html.dark .legend {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+.legend .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* =========================================
+   10. DASHBOARD BAR CHART
+   ========================================= */
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.bar-label { width: 85px; flex-shrink: 0; }
+.bar-track {
+  flex: 1;
+  background: var(--track-bg);
+  border-radius: 99px;
+  height: 12px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 99px;
+}
+.bar-count { width: 24px; text-align: right; flex-shrink: 0; }
+
+/* =========================================
+   11. TOAST
+   ========================================= */
+#toast-container {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 9999;
+}
+.toast {
+  min-width: 320px;
+  max-width: 480px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(-16px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { background: #10b981; }
+.toast.error { background: #ef4444; }
+.toast.info { background: #3b82f6; }
+
+/* =========================================
+   12. SCROLLBAR
+   ========================================= */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }

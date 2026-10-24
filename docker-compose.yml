@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: report-gis
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: geo_report
+    volumes:
+      - report-gis-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: geo-report-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: geo_report
+      JWT_SECRET: ${JWT_SECRET}
+      LOCATIONIQ_KEY: ${LOCATIONIQ_KEY}
+    volumes:
+      - uploads-data:/app/uploads
+    ports:
+      - "3000:3000"
+
+volumes:
+  report-gis-data:
+  uploads-data:
